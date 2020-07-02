@@ -23,7 +23,7 @@ The goal of this challenge is to assess a candidate’s proficiency in Javascrip
 
 The candidate will:
 
-- Fork our Code Challenge Github [repository](https://github.com/hi5studios/React-Challenge)
+- Fork our React Challenge Github [repository](https://github.com/hi5studios/React-Challenge)
 - Update `README.md` with their information
 - Create a new folder called `/app`
 - Work and make commits as they code to the `/app` folder
