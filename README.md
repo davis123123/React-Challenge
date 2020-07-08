@@ -9,13 +9,13 @@ Hi5 Code Challenge for Software Engineer Candidates
 
 ## Candidate Information (Fill out with your info)
 
-Name: _Your Name_
+Name: Davis Wong
 
-Email: _Your email_
+Email: daviswong123@gmail.com
 
-Resume: _link to your resume_
+Resume: https://drive.google.com/file/d/1DOJBaeuYqoqRQucIDRZ88LVRtdU86OYU/view?usp=sharing
 
-Additional: _Such as Github or LinkedIn, etc_
+Additional: Github: https://github.com/davis123123  LinkedIn:https://www.linkedin.com/in/davis-wong-b48b75127/
 
 ## Intro
 
