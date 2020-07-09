@@ -122,7 +122,8 @@ export function Navigation() {
       <NavigationContainer theme={currentTheme?customDarkTheme:customDefaultTheme}>
         <Stack.Navigator headerMode="none">
           <Stack.Screen name="rootHome" component={RootHome} />
-
+          <Stack.Screen name="search" component={Search} />
+          <Stack.Screen name="videoplayer" component={VideoPlayer} />
         </Stack.Navigator>
       </NavigationContainer>
    

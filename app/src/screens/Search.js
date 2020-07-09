@@ -5,6 +5,7 @@ import MiniCard from '../components/MiniCard'
 import Constant from 'expo-constants'
 import {useTheme} from '@react-navigation/native'
 import {useSelector,useDispatch} from 'react-redux'
+import InfiniteScroll from "react-infinite-scroll-component"
 //https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&q=songs&type=video&key=AIzaSyDtCWCduSedfthvh
 
 const SearchScreen = ({navigation})=>{
@@ -14,7 +15,8 @@ const SearchScreen = ({navigation})=>{
     const [value,setValue] = useState("")
     // const [miniCardData,setMiniCard] = useState([])
     const [npToken, setNPToken] = useState("")
-
+    let has = false
+    let refresh = false
     const dispatch = useDispatch()
     const miniCardData = useSelector(state=>{
         return state.cardData
@@ -24,33 +26,39 @@ const SearchScreen = ({navigation})=>{
     })
     const [loading,setLoading] = useState(false)
     const fetchData = () =>{
-
+        has = false
         setLoading(true)
-        fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=1&q=${value}&type=video&key=AIzaSyBsPw6V8EH0TyIolZC4VPevvHV0LufgY_U`)
+        fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&q=${value}&type=video&key=AIzaSyCQuFRo5eTGIELKGq29KLp70CJuwetipbk`)
         .then(res=>res.json())
         .then(data=>{
 
             
             //console.log(data)
+            setLoading(false)
             dispatch({type:"add",payload:data.items})
             setNPToken(data.nextPageToken)
-            setLoading(false)
+            
+
             //setMiniCard(data.items)
         })
-        console.log("here22", favData)
+        has = true
+        console.log("here33", favData)
 
     }
     const fetchData2 = () =>{
-        console.log("hasScrolled", hasScrolled)
-        if(!hasScrolled){ return null; }
-        fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=50&nextPageToken=${npToken}&q=${value}&type=video&key=AIzaSyBsPw6V8EH0TyIolZC4VPevvHV0LufgY_U`)
+        //console.log("hasScrolled", hasScrolled)
+        if(!has){ return null; }
+        has = true/*
+        fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=50&nextPageToken=${npToken}&q=${value}&type=video&key=AIzaSyCFg6FBEiL8Vebs8UPXRPjIyjYDHOQwRWE`)
         .then(res=>res.json())
         .then(data=>{
             dispatch({type:"add",payload:data.items})
             setNPToken(data.nextPageToken)
             //console.log("here22")
         })
-         //console.log("here22")
+*/
+         console.log("here242")
+         has = false
     }
 
   const onScroll = () => {
@@ -60,21 +68,6 @@ const SearchScreen = ({navigation})=>{
   const renderFooter = () => {
 
      return loading ?<ActivityIndicator size="medium" color="red"/>:null 
-  };
-
-
-const state = {
-    items: Array.from({ length: 20 })
-  };
-
-  const fetchMoreData = () => {
-    // a fake async api call like which sends
-    // 20 more records in 1.5 secs
-    setTimeout(() => {
-      
-        items: state.items.concat(Array.from({ length: 20 }))
-
-    }, 1500);
   };
 
 
@@ -102,18 +95,19 @@ const state = {
                  backgroundColor:"#e6e6e6"
                 }}
              value={value}
-             onChangeText={
-              (text)=>{
-                setValue(text);
-                fetchData();
-              }
-            }
+             onChangeText={(text)=>setValue(text)}
 
              />
-
+             <Ionicons
+              style={{color:mycolor}}
+             name="md-send"
+             size={32}
+             onPress={()=>fetchData()}
+             />
              
           </View>
            {loading ?<ActivityIndicator style={{marginTop:10}} size="large" color="red"/>:null } 
+          
           <FlatList
            data={miniCardData}
            renderItem={({item})=>{
@@ -129,7 +123,7 @@ const state = {
            keyExtractor={item=>item.id.videoId}
            //onScroll={}
            //onEndReached={fetchData2()}
-           //onEndReachedThreshold={0}
+           //onEndReachedThreshold={0.1}
            //ListFooterComponent={<Text>Loading...</Text>}
           />
         
