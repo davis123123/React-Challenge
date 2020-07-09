@@ -8,6 +8,7 @@ const Card = (props)=>{
     const {colors} = useTheme()
     const textcolor = colors.iconColor
     const dispatch = useDispatch()
+    const onPress = () => dispatch({type:"REMOVE",payload:props.item});
   return(
       <TouchableOpacity
       onPress={()=>navigation.navigate("videoplayer",{videoId:props.videoId,title:props.title})}

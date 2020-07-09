@@ -29,7 +29,7 @@ const SearchScreen = ({navigation})=>{
         has = false
         let pewDiePieId = "UC-lHJZR3Gqxm24_Vd_AJ5Yw"
         setLoading(true)
-        fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&q=${value}&channelId=${pewDiePieId}&type=video&key=AIzaSyCQuFRo5eTGIELKGq29KLp70CJuwetipbk`)
+        fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=50&q=${value}&channelId=${pewDiePieId}&type=video&key=AIzaSyAGNalYZa4WpsRMxGIuWGRKgc24dFWwP08`)
         .then(res=>res.json())
         .then(data=>{
 
@@ -96,15 +96,14 @@ const SearchScreen = ({navigation})=>{
                  backgroundColor:"#e6e6e6"
                 }}
              value={value}
-             onChangeText={(text)=>setValue(text)}
-
+            onChangeText={
+              (text)=>{
+                setValue(text);
+                fetchData();
+              }
+            }
              />
-             <Ionicons
-              style={{color:mycolor}}
-             name="md-send"
-             size={32}
-             onPress={()=>fetchData()}
-             />
+ 
              
           </View>
            {loading ?<ActivityIndicator style={{marginTop:10}} size="large" color="red"/>:null } 
