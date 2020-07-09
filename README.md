@@ -22,6 +22,9 @@ cd into React-Challenge/app
 npm install
 npm start
 
+download expo on iPhone
+scan QR Code
+
 Notes:
 -The homescreen should display the top query results from youtube (top 50)
 -The searchbar queries as you type. The videos all come from PewDiePie's channel
