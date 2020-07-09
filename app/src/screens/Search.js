@@ -61,12 +61,7 @@ const SearchScreen = ({navigation})=>{
             }
 
              />
-             <Ionicons
-              style={{color:mycolor}}
-             name="md-send"
-             size={32}
-             onPress={()=>fetchData()}
-             />
+             
           </View>
            {loading ?<ActivityIndicator style={{marginTop:10}} size="large" color="red"/>:null } 
           <FlatList
