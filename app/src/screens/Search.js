@@ -53,7 +53,12 @@ const SearchScreen = ({navigation})=>{
                  backgroundColor:"#e6e6e6"
                 }}
              value={value}
-             onChangeText={(text)=>setValue(text)}
+             onChangeText={
+              (text)=>{
+                setValue(text);
+                fetchData();
+              }
+            }
 
              />
              <Ionicons
