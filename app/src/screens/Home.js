@@ -8,31 +8,6 @@ import {useSelector,useDispatch} from 'react-redux'
 
 export default function HomeScreen({navigation}) {
 
-    const dispatch = useDispatch()
-    const [npToken, setNPToken] = useState("")
-    const fetchData = () =>{
-
-//        setLoading(true)
-        fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&type=video&key=AIzaSyAg6CXkno9V3urnkKJUR_leGMQuIp1hfZA`)
-        .then(res=>res.json())
-        .then(data=>{
-
-            
-            //console.log(data)
-            dispatch({type:"add",payload:data.items})
-            setNPToken(data.nextPageToken)
-          //  setLoading(false)
-
-            //setMiniCard(data.items)
-        })
-        console.log("here33")
-
-    }
-    try{
-  fetchData()
-}catch{
-  console.log("error caught")
-}
   const scrollY = new Animated.Value(0)
   const diffClamp = Animated.diffClamp(scrollY,0,45)
   const translateY = diffClamp.interpolate({

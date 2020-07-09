@@ -27,8 +27,9 @@ const SearchScreen = ({navigation})=>{
     const [loading,setLoading] = useState(false)
     const fetchData = () =>{
         has = false
+        let pewDiePieId = "UC-lHJZR3Gqxm24_Vd_AJ5Yw"
         setLoading(true)
-        fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&q=${value}&type=video&key=AIzaSyCQuFRo5eTGIELKGq29KLp70CJuwetipbk`)
+        fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&q=${value}&channelId=${pewDiePieId}&type=video&key=AIzaSyCQuFRo5eTGIELKGq29KLp70CJuwetipbk`)
         .then(res=>res.json())
         .then(data=>{
 

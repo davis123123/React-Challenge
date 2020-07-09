@@ -13,7 +13,7 @@ import Favorite from './src/screens/Favorite';
 import {reducer} from './src/reducers/reducer';
 import {themeReducer} from './src/reducers/themeReducer';
 import {favReducer} from './src/reducers/favReducer';
-import {Provider,useSelector} from 'react-redux';
+import {Provider,useSelector, useDispatch} from 'react-redux';
 import {createStore, combineReducers, applyMiddleware} from 'redux';
 import {persistStore, persistReducer} from 'redux-persist';
 import {createLogger} from 'redux-logger';
@@ -69,6 +69,33 @@ const Stack = createStackNavigator()
 const Tabs = createBottomTabNavigator()
 
 const RootHome = ()=>{
+
+    const dispatch = useDispatch()
+    const [npToken, setNPToken] = useState("")
+    const fetchData = () =>{
+
+//        setLoading(true)
+        fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&type=video&key=AIzaSyAg6CXkno9V3urnkKJUR_leGMQuIp1hfZA`)
+        .then(res=>res.json())
+        .then(data=>{
+
+            
+            //console.log(data)
+            dispatch({type:"add",payload:data.items})
+            setNPToken(data.nextPageToken)
+          //  setLoading(false)
+
+            //setMiniCard(data.items)
+        })
+        console.log("here33")
+
+    }
+    try{
+  fetchData()
+}catch{
+  console.log("error caught")
+}
+
   const {colors} = useTheme()
   return(
     <Tabs.Navigator
