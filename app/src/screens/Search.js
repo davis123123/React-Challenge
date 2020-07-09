@@ -13,22 +13,52 @@ const SearchScreen = ({navigation})=>{
 
     const [value,setValue] = useState("")
     // const [miniCardData,setMiniCard] = useState([])
+    const [npToken, setNPToken] = useState("")
+
     const dispatch = useDispatch()
     const miniCardData = useSelector(state=>{
         return state.cardData
     })
     const [loading,setLoading] = useState(false)
     const fetchData = () =>{
+
         setLoading(true)
-        fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${value}&type=video&key=AIzaSyCITZPIHPso6N4zC48oPfcz7OU6GsG6_H4`)
+        fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=50&q=${value}&type=video&key=AIzaSyCITZPIHPso6N4zC48oPfcz7OU6GsG6_H4`)
+        .then(res=>res.json())
+        .then(data=>{
+
+            setLoading(false)
+            //console.log(data)
+            dispatch({type:"add",payload:data.items})
+            setNPToken(data.nextPageToken)
+            setSearched(true)
+            //setMiniCard(data.items)
+        })
+        console.log("here")
+
+    }
+    const fetchData2 = () =>{
+
+
+
+        setLoading(true)
+        fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=50&nextPageToken=${npToken}&q=${value}&type=video&key=AIzaSyCITZPIHPso6N4zC48oPfcz7OU6GsG6_H4`)
         .then(res=>res.json())
         .then(data=>{
 
             setLoading(false)
             dispatch({type:"add",payload:data.items})
+            setNPToken(data.nextPageToken)
+            console.log("here22")
             //setMiniCard(data.items)
         })
     }
+
+  const renderFooter = () => {
+
+     return loading ?<ActivityIndicator size="medium" color="red"/>:null 
+  };
+
   return(
       <View style={{
           flex:1,
@@ -74,6 +104,9 @@ const SearchScreen = ({navigation})=>{
                />
            }}
            keyExtractor={item=>item.id.videoId}
+           onEndReached={miniCardData.length > 0 ? fetchData2() : null}
+           onEndReachedThreshold={0.1}
+           ListFooterComponent={renderFooter()}
           />
         
       </View>
