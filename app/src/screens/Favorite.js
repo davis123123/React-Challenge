@@ -7,7 +7,7 @@ const Favorite = ()=>{
    return(
        <View style={{flex:1}}>
            <Header />
-           <Text>Favorite videos</Text>
+           <Text>subs videos</Text>
        </View>
    )
 }

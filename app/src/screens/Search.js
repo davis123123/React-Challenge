@@ -5,7 +5,7 @@ import MiniCard from '../components/MiniCard'
 import Constant from 'expo-constants'
 import {useTheme} from '@react-navigation/native'
 import {useSelector,useDispatch} from 'react-redux'
-///https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&type=video&key=AIzaSyCITZPIHPso6N4zC48oPfcz7OU6GsG6_H4
+//https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&q=songs&type=video&key=AIzaSyDtCWCduSedfthvh
 
 const SearchScreen = ({navigation})=>{
     const {colors} =  useTheme()
@@ -20,8 +20,7 @@ const SearchScreen = ({navigation})=>{
     const [loading,setLoading] = useState(false)
     const fetchData = () =>{
         setLoading(true)
-        fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${value}&type=video&key=AIzaSyCITZPIHPso6N4zC48oPfcz7OU6GsG6_H4
-`)
+        fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${value}&type=video&key=AIzaSyCITZPIHPso6N4zC48oPfcz7OU6GsG6_H4`)
         .then(res=>res.json())
         .then(data=>{
 
@@ -30,8 +29,7 @@ const SearchScreen = ({navigation})=>{
             //setMiniCard(data.items)
         })
     }
-
-    return(
+  return(
       <View style={{
           flex:1,
           marginTop:Constant.statusBarHeight,
