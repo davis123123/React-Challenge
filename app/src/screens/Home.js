@@ -38,6 +38,7 @@ export default function HomeScreen({navigation}) {
         videoId={item.id.videoId}
         title={item.snippet.title}
         channel={item.snippet.channelTitle}
+        item = {item}
         />
       }}
     

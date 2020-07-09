@@ -2,11 +2,12 @@ import React from 'react';
 import { StyleSheet, Text, View,Image,Dimensions,TouchableOpacity} from 'react-native';
 import {MaterialIcons} from '@expo/vector-icons'
 import { useNavigation ,useTheme} from '@react-navigation/native';
-
+import {useSelector,useDispatch} from 'react-redux'
 const Card = (props)=>{
     const navigation = useNavigation();
     const {colors} = useTheme()
     const textcolor = colors.iconColor
+    const dispatch = useDispatch()
   return(
       <TouchableOpacity
       onPress={()=>navigation.navigate("videoplayer",{videoId:props.videoId,title:props.title})}
@@ -45,6 +46,16 @@ const Card = (props)=>{
                 color:textcolor
 
             }}>{props.channel}</Text>
+            <TouchableOpacity
+                onPress={()=>dispatch({type:"PUT",payload:props.item})}
+      >
+               <Text style={{fontSize:12, color:textcolor}}>Favorite</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                onPress={()=>dispatch({type:"REMOVE",payload:props.item})}
+      >
+               <Text style={{fontSize:12, color:textcolor}}>UnFavorite</Text>
+                </TouchableOpacity>
          </View>
          
      </View>

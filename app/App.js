@@ -1,29 +1,25 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import {NavigationContainer,DefaultTheme,DarkTheme,useTheme} from '@react-navigation/native'
-import {createStackNavigator} from '@react-navigation/stack'
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
-import {MaterialIcons} from '@expo/vector-icons'
-import Constant from 'expo-constants'
+import {NavigationContainer,DefaultTheme,DarkTheme,useTheme} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {MaterialIcons} from '@expo/vector-icons';
+import Constant from 'expo-constants';
 import Home from './src/screens/Home';
-import Search from './src/screens/Search'
-import VideoPlayer from './src/screens/VideoPlayer'
-import Explore from './src/screens/Explore'
-import Favorite from './src/screens/Favorite'
-import {reducer} from './src/reducers/reducer'
-import {themeReducer} from './src/reducers/themeReducer'
-import {Provider,useSelector} from 'react-redux'
-import {createStore,combineReducers} from 'redux'
+import Search from './src/screens/Search';
+import VideoPlayer from './src/screens/VideoPlayer';
+import Explore from './src/screens/Explore';
+import Favorite from './src/screens/Favorite';
+import {reducer} from './src/reducers/reducer';
+import {themeReducer} from './src/reducers/themeReducer';
+import {favReducer} from './src/reducers/favReducer';
+import {Provider,useSelector} from 'react-redux';
+import {createStore, combineReducers, applyMiddleware} from 'redux';
+import {persistStore, persistReducer} from 'redux-persist';
+import {createLogger} from 'redux-logger';
+import AsyncStorage from '@react-native-community/async-storage';
+import {PersistGate} from 'redux-persist/es/integration/react';
 
-const customDarkTheme={
-  ...DarkTheme,
-  colors:{
-    ...DarkTheme.colors,
-    headerColor:"#404040",
-    iconColor:"white",
-    tabIcon:"white"
-  }
-}
 
 const customDefaultTheme={
   ...DefaultTheme,
@@ -37,8 +33,35 @@ const customDefaultTheme={
 
 const rooReducer = combineReducers({
   cardData:reducer, //[],
-  myDarMode:themeReducer//false
+  myDarMode:themeReducer,//false
+  favReducer:favReducer
 })
+
+const persistConfig = {
+  key: 'root',
+  storage: AsyncStorage,
+  whitelist:['favReducer']
+}
+
+const persistedReducer = persistReducer(persistConfig, rooReducer)
+
+const store2 = createStore(
+  persistedReducer, applyMiddleware(createLogger())
+);
+
+const persistedStore = persistStore(store2)
+
+const customDarkTheme={
+  ...DarkTheme,
+  colors:{
+    ...DarkTheme.colors,
+    headerColor:"#404040",
+    iconColor:"white",
+    tabIcon:"white"
+  }
+}
+
+
 const store = createStore(rooReducer)
 
 
@@ -52,7 +75,7 @@ const RootHome = ()=>{
     screenOptions={({ route }) => ({
       tabBarIcon: ({ color }) => {
         let iconName;
-
+        //persistedStore.purge()
         if (route.name === 'home') {
           iconName = 'home';
         } else if (route.name === 'search') {
@@ -79,8 +102,11 @@ const RootHome = ()=>{
 
 export default App = ()=>{
   return(
-     <Provider store={store}>
-      <Navigation />
+     <Provider store={store2}>
+      <PersistGate persistor={persistedStore} loading = {null} >
+        <Navigation />
+      </PersistGate>
+      
     </Provider>
   )
  

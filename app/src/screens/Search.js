@@ -10,7 +10,7 @@ import {useSelector,useDispatch} from 'react-redux'
 const SearchScreen = ({navigation})=>{
     const {colors} =  useTheme()
     const mycolor = colors.iconColor
-
+    var hasScrolled = false
     const [value,setValue] = useState("")
     // const [miniCardData,setMiniCard] = useState([])
     const [npToken, setNPToken] = useState("")
@@ -19,45 +19,64 @@ const SearchScreen = ({navigation})=>{
     const miniCardData = useSelector(state=>{
         return state.cardData
     })
+    const favData = useSelector(state=>{
+        return state.favReducer
+    })
     const [loading,setLoading] = useState(false)
     const fetchData = () =>{
 
         setLoading(true)
-        fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=50&q=${value}&type=video&key=AIzaSyCITZPIHPso6N4zC48oPfcz7OU6GsG6_H4`)
+        fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=1&q=${value}&type=video&key=AIzaSyBsPw6V8EH0TyIolZC4VPevvHV0LufgY_U`)
         .then(res=>res.json())
         .then(data=>{
 
-            setLoading(false)
+            
             //console.log(data)
             dispatch({type:"add",payload:data.items})
             setNPToken(data.nextPageToken)
-            setSearched(true)
+            setLoading(false)
             //setMiniCard(data.items)
         })
-        console.log("here")
+        console.log("here22", favData)
 
     }
     const fetchData2 = () =>{
-
-
-
-        setLoading(true)
-        fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=50&nextPageToken=${npToken}&q=${value}&type=video&key=AIzaSyCITZPIHPso6N4zC48oPfcz7OU6GsG6_H4`)
+        console.log("hasScrolled", hasScrolled)
+        if(!hasScrolled){ return null; }
+        fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=50&nextPageToken=${npToken}&q=${value}&type=video&key=AIzaSyBsPw6V8EH0TyIolZC4VPevvHV0LufgY_U`)
         .then(res=>res.json())
         .then(data=>{
-
-            setLoading(false)
             dispatch({type:"add",payload:data.items})
             setNPToken(data.nextPageToken)
-            console.log("here22")
-            //setMiniCard(data.items)
+            //console.log("here22")
         })
+         //console.log("here22")
     }
+
+  const onScroll = () => {
+    hasScrolled = true
+  }
 
   const renderFooter = () => {
 
      return loading ?<ActivityIndicator size="medium" color="red"/>:null 
   };
+
+
+const state = {
+    items: Array.from({ length: 20 })
+  };
+
+  const fetchMoreData = () => {
+    // a fake async api call like which sends
+    // 20 more records in 1.5 secs
+    setTimeout(() => {
+      
+        items: state.items.concat(Array.from({ length: 20 }))
+
+    }, 1500);
+  };
+
 
   return(
       <View style={{
@@ -91,22 +110,27 @@ const SearchScreen = ({navigation})=>{
             }
 
              />
+
              
           </View>
            {loading ?<ActivityIndicator style={{marginTop:10}} size="large" color="red"/>:null } 
           <FlatList
            data={miniCardData}
            renderItem={({item})=>{
+              onScroll()
+              
                return <MiniCard
                 videoId={item.id.videoId}
                 title={item.snippet.title}
                 channel={item.snippet.channelTitle}
+                item={item}
                />
            }}
            keyExtractor={item=>item.id.videoId}
-           onEndReached={miniCardData.length > 0 ? fetchData2() : null}
-           onEndReachedThreshold={0.1}
-           ListFooterComponent={renderFooter()}
+           //onScroll={}
+           //onEndReached={fetchData2()}
+           //onEndReachedThreshold={0}
+           //ListFooterComponent={<Text>Loading...</Text>}
           />
         
       </View>
