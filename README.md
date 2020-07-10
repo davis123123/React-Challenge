@@ -45,7 +45,7 @@ Bugs:
 -when favoriting, the screen will un-render so you will need to either refresh (if you are in home) or search again (if you are in search), 
 favorite will auto-refresh
 
--Was not able to successfully implement infinite scroll. (issue where it would infinite re-render upon initializing screen)
+-Was not able to successfully implement infinite scroll due to time constraints. (issue where it would infinite re-render upon initializing screen)
 (Thus, I had to remove the load more upon reaching the end of page)
 
 -Maxed out Youtube queries on current API-KEY on 07/09/2020 , need to wait a day before querying
