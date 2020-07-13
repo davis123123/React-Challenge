@@ -70,17 +70,17 @@ const Tabs = createBottomTabNavigator()
 
 const RootHome = ()=>{
 
-    const dispatch = useDispatch()
+     const dispatch = useDispatch()
     const [npToken, setNPToken] = useState("")
     const fetchData = () =>{
 
 //        setLoading(true)
-        fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=50&type=video&key=AIzaSyAGNalYZa4WpsRMxGIuWGRKgc24dFWwP08`)
+        fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=50&type=video&key=AIzaSyCITZPIHPso6N4zC48oPfcz7OU6GsG6_H4`)
         .then(res=>res.json())
         .then(data=>{
 
             
-            //console.log(data)
+            console.log("here")
             dispatch({type:"add",payload:data.items})
             setNPToken(data.nextPageToken)
           //  setLoading(false)
@@ -90,12 +90,7 @@ const RootHome = ()=>{
         console.log("here33")
 
     }
-    try{
-  fetchData()
-}catch{
-  console.log("error caught")
-}
-
+    fetchData()
   const {colors} = useTheme()
   return(
     <Tabs.Navigator

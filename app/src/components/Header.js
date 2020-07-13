@@ -22,7 +22,7 @@ export default function Header({height}) {
         top:0,
         left:0,
         right:0,
-        height:45,
+        height:0,
         backgroundColor:colors.headerColor,
         flexDirection:"row",
         justifyContent:"space-between",

@@ -13,10 +13,12 @@ const SearchScreen = ({navigation})=>{
     const mycolor = colors.iconColor
     var hasScrolled = false
     const [value,setValue] = useState("")
-    // const [miniCardData,setMiniCard] = useState([])
+    const [minCardData,setMiniCard] = useState([])
     const [npToken, setNPToken] = useState("")
     let has = false
+    let onEndReachedCalledDuringMomentum = true
     let refresh = false
+    let pewDiePieId = "UC-lHJZR3Gqxm24_Vd_AJ5Yw"
     const dispatch = useDispatch()
     const miniCardData = useSelector(state=>{
         return state.cardData
@@ -27,9 +29,9 @@ const SearchScreen = ({navigation})=>{
     const [loading,setLoading] = useState(false)
     const fetchData = () =>{
         has = false
-        let pewDiePieId = "UC-lHJZR3Gqxm24_Vd_AJ5Yw"
+        
         setLoading(true)
-        fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=50&q=${value}&channelId=${pewDiePieId}&type=video&key=AIzaSyAGNalYZa4WpsRMxGIuWGRKgc24dFWwP08`)
+        fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=50&q=${value}&channelId=${pewDiePieId}&type=video&key=AIzaSyCITZPIHPso6N4zC48oPfcz7OU6GsG6_H4`)
         .then(res=>res.json())
         .then(data=>{
 
@@ -40,7 +42,7 @@ const SearchScreen = ({navigation})=>{
             setNPToken(data.nextPageToken)
             
 
-            //setMiniCard(data.items)
+            setMiniCard(data.items)
         })
         has = true
         console.log("here33", favData)
@@ -48,18 +50,19 @@ const SearchScreen = ({navigation})=>{
     }
     const fetchData2 = () =>{
         //console.log("hasScrolled", hasScrolled)
-        if(!has){ return null; }
-        has = true/*
-        fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=50&nextPageToken=${npToken}&q=${value}&type=video&key=AIzaSyCFg6FBEiL8Vebs8UPXRPjIyjYDHOQwRWE`)
+
+        fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=50&nextPageToken=${npToken}&q=${value}&channelId=${pewDiePieId}&type=video&key=AIzaSyCFg6FBEiL8Vebs8UPXRPjIyjYDHOQwRWE`)
         .then(res=>res.json())
         .then(data=>{
             dispatch({type:"add",payload:data.items})
             setNPToken(data.nextPageToken)
+
+            setMiniCard(data.items)
             //console.log("here22")
         })
-*/
+
          console.log("here242")
-         has = false
+      
     }
 
   const onScroll = () => {
@@ -109,7 +112,7 @@ const SearchScreen = ({navigation})=>{
            {loading ?<ActivityIndicator style={{marginTop:10}} size="large" color="red"/>:null } 
           
           <FlatList
-           data={miniCardData}
+           data={minCardData}
            renderItem={({item})=>{
               onScroll()
               
@@ -122,8 +125,16 @@ const SearchScreen = ({navigation})=>{
            }}
            keyExtractor={item=>item.id.videoId}
            //onScroll={}
-           //onEndReached={fetchData2()}
-           //onEndReachedThreshold={0.1}
+           initalNumToRender = {50}
+           onEndReached={() => {
+            if(onEndReachedCalledDuringMomentum == false ) {
+                  fetchData2();    // LOAD MORE DATA
+                  onEndReachedCalledDuringMomentum = true;
+                }
+              }
+           }
+           onEndReachedThreshold={0.1}
+           onMomentumScrollBegin = {() => {onEndReachedCalledDuringMomentum = false;}}
            //ListFooterComponent={<Text>Loading...</Text>}
           />
         

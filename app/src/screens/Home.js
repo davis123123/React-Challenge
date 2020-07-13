@@ -14,11 +14,15 @@ export default function HomeScreen({navigation}) {
     inputRange:[0,45],
     outputRange:[0,-45]
   })
+
+ 
   const cardData = useSelector(state=>{
     return state.cardData
   })
   return (
-    <View style={{flex:1}}>
+    
+    <View style={{flex:1
+    }}>
       <Animated.View
       style={{
         transform:[
@@ -26,6 +30,7 @@ export default function HomeScreen({navigation}) {
         ],
         elevation:4,
         zIndex:100,
+
       }}
       >
         <Header />
